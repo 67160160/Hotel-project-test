@@ -25,14 +25,192 @@
 
 ---
 
-## 🚀 วิธีการติดตั้งและรันโปรเจกต์ (How to Run)
+⚡ วิธีการรันระบบ (How to Run)
 
-### 🔹 สำหรับการทดสอบใช้งานบนเครื่อง Local (สัปดาห์ที่ 1)
-1. ดาวน์โหลดหรือคัดลอกไฟล์โค้ดระบบนี้ไว้ในเครื่องคอมพิวเตอร์ของคุณ
-2. ดับเบิ้ลคลิก (Double-click) ที่ไฟล์หน้าเว็บหลักเพื่อเปิดใช้งานผ่านเว็บเบราว์เซอร์ (เช่น Google Chrome, Microsoft Edge, Safari) ได้ทันทีโดยไม่ต้องติดตั้งซอฟต์แวร์เพิ่มเติม
+เลือกวิธีรันที่เหมาะสมกับรูปแบบการทำงานของคุณ:
 
-### 🔹 สำหรับการรันระบบเต็มรูปแบบ (สัปดาห์ที่ 2 เป็นต้นไป)
-เมื่อนำระบบเข้าสู่โครงสร้าง Scaffold เต็มรูปแบบแล้ว สามารถสั่งรัน Backend + DB + Frontend ได้ด้วยคำสั่งเดียว[cite: 2]:
+🟢 วิธีที่ 1: รันทุกอย่างด้วย Docker Compose (แนะนำ)
+
+เหมาะสำหรับการรันระบบทั้งหมดโดยไม่ต้องลง Python หรือ Node.js บนเครื่อง
+
+
+
+
+
+เปิดโปรแกรม Docker Desktop บนเครื่องคอมพิวเตอร์
+
+
+
+สร้างไฟล์ .env จากไฟล์ตัวอย่าง:
+
+Bash
+
+cp .env.example .env
+
+
+
+
+สั่ง Build และรันระบบ:
+
+Bash
+
+docker compose up --build
+
+
+
+
+การเข้าใช้งาน:
+
+
+
+
+
+Backend API Docs (Swagger): http://localhost:8000/docs
+
+
+
+Backend API Docs (ReDoc): http://localhost:8000/redoc
+
+หากต้องการหยุดรัน ให้กด Ctrl + C บน Terminal หรือพิมพ์:
+
+Bash
+
+docker compose down
+
+
+🟡 วิธีที่ 2: รัน Backend แบบ Local (สำหรับพัฒนาโค้ด Python)
+
+เหมาะสำหรับการแก้โค้ดฝั่ง Backend และต้องการทดสอบรันอย่างรวดเร็ว
+
+
+
+
+
+สร้างและเปิดใช้งาน Virtual Environment:
+
+
+
+
+
+Windows:
+
+Bash
+
+python -m venv venv
+.\venv\Scripts\activate
+
+
+
+
+macOS / Linux:
+
+Bash
+
+python3 -m venv venv
+source venv/bin/activate
+
+
+
+
+ติดตั้ง Dependencies ทั้งหมด:
+
+Bash
+
+pip install -r requirements.txt
+
+
+
+
+เตรียมไฟล์ .env:
+
+Bash
+
+cp .env.example .env
+
+
+
+
+สั่งรัน FastAPI Server:
+
+Bash
+
+uvicorn app.main:app --reload --port 8000
+
+
+🔵 วิธีที่ 3: รัน Frontend (กรณีมีส่วนหน้าเว็บ)
+
+หากมีโค้ดฝั่งหน้าเว็บอยู่ในโฟลเดอร์ frontend:
+
+
+
+
+
+เปิด Terminal หน้าต่างใหม่ แล้วเข้าไปที่โฟลเดอร์ frontend:
+
+Bash
+
+cd frontend
+
+
+
+
+ติดตั้ง Package ของ Node.js:
+
+Bash
+
+npm install
+
+
+
+
+สั่งรันระบบ Development Server:
+
+Bash
+
+npm run dev
+
+
+
+
+เข้าดูหน้าเว็บตาม URL ที่ปรากฏบน Terminal (ปกติคือ http://localhost:5173 หรือ http://localhost:3000)
+
+📑 ขั้นตอนการทดสอบสิทธิ์และทดสอบ API
+
+
+
+
+
+เปิดเบราว์เซอร์ไปที่ Swagger UI (http://localhost:8000/docs)
+
+
+
+ลงทะเบียนผู้ใช้: ไปที่ Endpoint POST /api/v1/users/ เพื่อสร้างบัญชี
+
+
+
+เข้าสู่ระบบ: ไปที่ Endpoint POST /api/v1/auth/login กรอก Email/Password เพื่อขอรับ Access Token
+
+
+
+ยืนยันตัวตน: คัดลอก Token ที่ได้ -> กดปุ่ม Authorize (มุมขวาบนของ Swagger) -> วาง Token ลงในช่อง แล้วกด Authorize
+
+
+
+ทดสอบใช้งาน: ทดสอบสั่งสร้างหรือลบสินค้าผ่าน POST /api/v1/items/ หรือ DELETE /api/v1/items/{id}
+
+🧪 การรัน Automated Tests
+
+สั่งรัน Unit Test เพื่อตรวจสอบความถูกต้องของระบบ:
+
+Bash
+
+# บนเครื่อง Local
+pytest
+
+# บน Docker Container
+docker compose exec web pytest
+
+
 ```bash
 docker compose up
 ├── app/                        # โค้ดหลักของแอปพลิเคชัน
