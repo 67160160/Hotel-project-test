@@ -35,3 +35,22 @@
 เมื่อนำระบบเข้าสู่โครงสร้าง Scaffold เต็มรูปแบบแล้ว สามารถสั่งรัน Backend + DB + Frontend ได้ด้วยคำสั่งเดียว[cite: 2]:
 ```bash
 docker compose up
+├── app/                        # โค้ดหลักของแอปพลิเคชัน
+│   ├── api/                    # API Endpoints และ Routers
+│   │   └── v1/
+│   │       ├── endpoints/      # Controllers (auth, users, items)
+│   │       └── router.py       # Central Route Aggregator
+│   ├── core/                   # ระบบส่วนกลาง (Database, Security, JWT)
+│   ├── models/                 # SQLAlchemy Database Entities
+│   ├── schemas/                # Pydantic Schemas (Data Validation)
+│   ├── services/               # Business Logic & Database Queries
+│   ├── config.py               # Application Settings & Env Config
+│   └── main.py                 # Application Entry Point
+├── tests/                      # Automated Unit Tests
+├── .dockerignore
+├── .env                        # Environment Variables
+├── .env.example
+├── Dockerfile                  # Container Build Config
+├── docker-compose.yml          # Container Orchestration Config
+├── README.md
+└── requirements.txt            # Python Dependencies
