@@ -88,7 +88,7 @@ docker compose down
 3. เตรียมไฟล์ `.env`:
 
    ```bash
-   cp .env.example .env
+   copy .env.example .env
    ```
 
 4. สั่งรัน FastAPI Server:
