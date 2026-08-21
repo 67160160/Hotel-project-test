@@ -25,190 +25,127 @@
 
 ---
 
-⚡ วิธีการรันระบบ (How to Run)
+# ⚡ วิธีการรันระบบ (How to Run)
 
 เลือกวิธีรันที่เหมาะสมกับรูปแบบการทำงานของคุณ:
 
-🟢 วิธีที่ 1: รันทุกอย่างด้วย Docker Compose (แนะนำ)
+## 🟢 วิธีที่ 1: รันทุกอย่างด้วย Docker Compose (แนะนำ)
 
 เหมาะสำหรับการรันระบบทั้งหมดโดยไม่ต้องลง Python หรือ Node.js บนเครื่อง
 
+1. เปิดโปรแกรม Docker Desktop บนเครื่องคอมพิวเตอร์
 
+2. สร้างไฟล์ `.env` จากไฟล์ตัวอย่าง:
 
+   ```bash
+   cp .env.example .env
+   ```
 
+3. สั่ง Build และรันระบบ:
 
-เปิดโปรแกรม Docker Desktop บนเครื่องคอมพิวเตอร์
+   ```bash
+   docker compose up --build
+   ```
 
+4. การเข้าใช้งาน:
+   - Backend API Docs (Swagger): `http://localhost:8000/docs`
+   - Backend API Docs (ReDoc): `http://localhost:8000/redoc`
 
+หากต้องการหยุดรัน ให้กด `Ctrl + C` บน Terminal หรือพิมพ์:
 
-สร้างไฟล์ .env จากไฟล์ตัวอย่าง:
-
-Bash
-
-cp .env.example .env
-
-
-
-
-สั่ง Build และรันระบบ:
-
-Bash
-
-docker compose up --build
-
-
-
-
-การเข้าใช้งาน:
-
-
-
-
-
-Backend API Docs (Swagger): http://localhost:8000/docs
-
-
-
-Backend API Docs (ReDoc): http://localhost:8000/redoc
-
-หากต้องการหยุดรัน ให้กด Ctrl + C บน Terminal หรือพิมพ์:
-
-Bash
-
+```bash
 docker compose down
+```
 
+---
 
-🟡 วิธีที่ 2: รัน Backend แบบ Local (สำหรับพัฒนาโค้ด Python)
+## 🟡 วิธีที่ 2: รัน Backend แบบ Local (สำหรับพัฒนาโค้ด Python)
 
 เหมาะสำหรับการแก้โค้ดฝั่ง Backend และต้องการทดสอบรันอย่างรวดเร็ว
 
+1. สร้างและเปิดใช้งาน Virtual Environment:
 
+   **Windows:**
 
+   ```bash
+   python -m venv venv
+   .\venv\Scripts\activate
+   ```
 
+   **macOS / Linux:**
 
-สร้างและเปิดใช้งาน Virtual Environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
 
+2. ติดตั้ง Dependencies ทั้งหมด:
 
+   ```bash
+   pip install -r requirements.txt
+   ```
 
+3. เตรียมไฟล์ `.env`:
 
+   ```bash
+   cp .env.example .env
+   ```
 
-Windows:
+4. สั่งรัน FastAPI Server:
 
-Bash
+   ```bash
+   uvicorn app.main:app --reload --port 8000
+   ```
 
-python -m venv venv
-.\venv\Scripts\activate
+---
 
+## 🔵 วิธีที่ 3: รัน Frontend (กรณีมีส่วนหน้าเว็บ)
 
+หากมีโค้ดฝั่งหน้าเว็บอยู่ในโฟลเดอร์ `frontend`:
 
+1. เปิด Terminal หน้าต่างใหม่ แล้วเข้าไปที่โฟลเดอร์ `frontend`:
 
-macOS / Linux:
+   ```bash
+   cd frontend
+   ```
 
-Bash
+2. ติดตั้ง Package ของ Node.js:
 
-python3 -m venv venv
-source venv/bin/activate
+   ```bash
+   npm install
+   ```
 
+3. สั่งรันระบบ Development Server:
 
+   ```bash
+   npm run dev
+   ```
 
+4. เข้าดูหน้าเว็บตาม URL ที่ปรากฏบน Terminal (ปกติคือ `http://localhost:5173` หรือ `http://localhost:3000`)
 
-ติดตั้ง Dependencies ทั้งหมด:
+---
 
-Bash
+## 📑 ขั้นตอนการทดสอบสิทธิ์และทดสอบ API
 
-pip install -r requirements.txt
+1. เปิดเบราว์เซอร์ไปที่ Swagger UI (`http://localhost:8000/docs`)
+2. ลงทะเบียนผู้ใช้: ไปที่ Endpoint `POST /api/v1/users/` เพื่อสร้างบัญชี
+3. เข้าสู่ระบบ: ไปที่ Endpoint `POST /api/v1/auth/login` กรอก Email/Password เพื่อขอรับ Access Token
+4. ยืนยันตัวตน: คัดลอก Token ที่ได้ -> กดปุ่ม Authorize (มุมขวาบนของ Swagger) -> วาง Token ลงในช่อง แล้วกด Authorize
+5. ทดสอบใช้งาน: ทดสอบสั่งสร้างหรือลบสินค้าผ่าน `POST /api/v1/items/` หรือ `DELETE /api/v1/items/{id}`
 
+---
 
-
-
-เตรียมไฟล์ .env:
-
-Bash
-
-cp .env.example .env
-
-
-
-
-สั่งรัน FastAPI Server:
-
-Bash
-
-uvicorn app.main:app --reload --port 8000
-
-
-🔵 วิธีที่ 3: รัน Frontend (กรณีมีส่วนหน้าเว็บ)
-
-หากมีโค้ดฝั่งหน้าเว็บอยู่ในโฟลเดอร์ frontend:
-
-
-
-
-
-เปิด Terminal หน้าต่างใหม่ แล้วเข้าไปที่โฟลเดอร์ frontend:
-
-Bash
-
-cd frontend
-
-
-
-
-ติดตั้ง Package ของ Node.js:
-
-Bash
-
-npm install
-
-
-
-
-สั่งรันระบบ Development Server:
-
-Bash
-
-npm run dev
-
-
-
-
-เข้าดูหน้าเว็บตาม URL ที่ปรากฏบน Terminal (ปกติคือ http://localhost:5173 หรือ http://localhost:3000)
-
-📑 ขั้นตอนการทดสอบสิทธิ์และทดสอบ API
-
-
-
-
-
-เปิดเบราว์เซอร์ไปที่ Swagger UI (http://localhost:8000/docs)
-
-
-
-ลงทะเบียนผู้ใช้: ไปที่ Endpoint POST /api/v1/users/ เพื่อสร้างบัญชี
-
-
-
-เข้าสู่ระบบ: ไปที่ Endpoint POST /api/v1/auth/login กรอก Email/Password เพื่อขอรับ Access Token
-
-
-
-ยืนยันตัวตน: คัดลอก Token ที่ได้ -> กดปุ่ม Authorize (มุมขวาบนของ Swagger) -> วาง Token ลงในช่อง แล้วกด Authorize
-
-
-
-ทดสอบใช้งาน: ทดสอบสั่งสร้างหรือลบสินค้าผ่าน POST /api/v1/items/ หรือ DELETE /api/v1/items/{id}
-
-🧪 การรัน Automated Tests
+## 🧪 การรัน Automated Tests
 
 สั่งรัน Unit Test เพื่อตรวจสอบความถูกต้องของระบบ:
 
-Bash
-
+```bash
 # บนเครื่อง Local
 pytest
 
 # บน Docker Container
 docker compose exec web pytest
+```
 
 
 ```bash
